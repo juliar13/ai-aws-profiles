@@ -1,6 +1,6 @@
-# ai-aws-extend-switch-roles
+# AWS プロファイルの設定出力ツール
 
-AWS Extend Switch Rolesや~/.aws/configに記載するプロファイルを出力するCLIツール
+AWS Extend Switch Roles や `~/.aws/config` に記載するプロファイルを出力するCLIツール
 
 ## 概要
 
@@ -8,8 +8,16 @@ AWS Extend Switch Rolesや~/.aws/configに記載するプロファイルを出�
 
 ## 機能
 
-- AWS Extend Switch Roles用の設定を生成
-- `~/.aws/config`用のプロファイル設定を生成
+- AWS Organizations から自動的にアカウント情報を取得
+- プロファイル設定を生成
+  - AWS Extend Switch Roles 用の設定を生成
+  - `~/.aws/config`用のプロファイル設定を生成
+
+## 前提条件
+
+- AWS CLI がセットアップされていること
+- AWS Organizations の管理アカウントにアクセス権限があること
+- Organizations の ListAccounts 権限があること
 
 ## インストール
 
@@ -24,7 +32,7 @@ brew install juliar13/ai-aws-profiles/aws-profiles
 ### 基本的な使い方
 
 ```bash
-# 現在のディレクトリに AWS Extend Switch Roles用の設定（extension.ini) と ~/.aws/config 用の設定(config.ini) をそれぞれ出力
+# AWS Organizations から自動取得して extension.ini と config.ini をそれぞれ出力
 aws-prof
 
 # AWS Extend Switch Roles 用の設定を標準出力
@@ -33,7 +41,7 @@ aws-prof --format=extension
 # ~/.aws/config 用の設定を標準出力
 aws-prof --format=config
 
-# 現在のディレクトリの profiles.txt に設定を出力
+# 指定したファイルに設定を出力
 aws-prof --format=extension --output=profiles.txt
 
 # バージョンの確認
@@ -69,7 +77,7 @@ color = 00aa00
 
 ```ini
 [default]
-region = region
+region = ap-northeast-1
 output = json
 role_session_name = user_name
 
@@ -106,7 +114,7 @@ role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
 ### ビルド
 
 ```bash
-go build -o ai-aws-extend-switch-roles cmd/main.go
+go build -o aws-prof cmd/main.go
 ```
 
 ### テスト
