@@ -23,8 +23,15 @@ AWS Extend Switch Roles や `~/.aws/config` に記載するプロファイルを
 
 ### Homebrew
 
+対応予定です。
+
+### ソースからビルド
+
 ```bash
-brew install juliar13/ai-aws-profiles/aws-profiles
+git clone https://github.com/juliar13/ai-aws-profiles.git
+cd ai-aws-profiles
+go build -o aws-prof cmd/main.go
+sudo cp aws-prof /usr/local/bin/
 ```
 
 ## 使用方法
