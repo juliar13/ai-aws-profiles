@@ -97,6 +97,11 @@ func GenerateFromAWSAccounts(ctx context.Context) (*Generator, error) {
 	}
 
 	generator := NewGenerator()
+	err = generator.ColorManager.LoadColorSettings()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load color settings: %w", err)
+	}
+	
 	for _, account := range accounts {
 		generator.GenerateProfiles(account.ID, account.Name)
 	}

@@ -12,18 +12,23 @@ type Profile struct {
 }
 
 type Generator struct {
-	Profiles []Profile
+	Profiles     []Profile
+	ColorManager *ColorManager
 }
 
 func NewGenerator() *Generator {
-	return &Generator{}
+	cm := NewColorManager()
+	return &Generator{
+		ColorManager: cm,
+	}
 }
 
 func (g *Generator) AddProfile(name, roleArn string) {
+	color := g.ColorManager.GetColorForProfile(name)
 	profile := Profile{
 		Name:    name,
 		RoleArn: roleArn,
-		Color:   "00aa00",
+		Color:   color,
 	}
 	g.Profiles = append(g.Profiles, profile)
 }

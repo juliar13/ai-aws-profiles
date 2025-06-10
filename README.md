@@ -64,22 +64,22 @@ aws-prof --help
 
 ```ini
 [profile test-admin]
-role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
+role_arn = arn:aws:iam::123456789011:role/AdminSwitchRole
 region = ap-northeast-1
 color = 00aa00
 
 [profile test-readonly]
-role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
+role_arn = arn:aws:iam::123456789011:role/ReadOnlySwitchRole
 region = ap-northeast-1
 color = 00aa00
 
 [profile test2-admin]
-role_arn = arn:aws:iam::123456789013:role/AdminSwitchRole
+role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
 region = ap-northeast-1
 color = 00aa00
 
 [profile test2-readonly]
-role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
+role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
 region = ap-northeast-1
 color = 00aa00
 ```
@@ -94,19 +94,19 @@ role_session_name = user_name
 
 [profile test-admin]
 source_profile = default
-role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
+role_arn = arn:aws:iam::123456789011:role/AdminSwitchRole
 
 [profile test-readonly]
 source_profile = default
-role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
+role_arn = arn:aws:iam::123456789011:role/ReadOnlySwitchRole
 
 [profile test2-admin]
 source_profile = default
-role_arn = arn:aws:iam::123456789013:role/AdminSwitchRole
+role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
 
 [profile test2-readonly]
 source_profile = default
-role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
+role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
 ```
 
 ## オプション
@@ -115,6 +115,40 @@ role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
 |-----------|------|
 | `--format` | 出力形式 (extension/config) |
 | `--output` | 出力ファイルパス |
+
+## AWS Extend Switch Role の色を設定
+
+color-setting.ini に記載されているように、上から順に反映させること。
+以下はデフォルトの設定だが、プロファイル名に admin が含まれているプロファイルは、color = 6644FF となり、 readonly が含まれていれば color = 22CCAA となる。
+例えば、プロファイル名に admin と readonly が含まれていると、下にある readonly 22CCAA が適用されて、color = 22CCAA となる。
+
+```
+admin 6644FF
+readonly 22CCAA
+```
+
+```ini
+[profile test3-admin]
+role_arn = arn:aws:iam::123456789013:role/AdminSwitchRole
+region = ap-northeast-1
+color = 6644FF
+
+[profile test3-readonly]
+role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
+region = ap-northeast-1
+color = 22CCAA
+
+[profile test4-admin]
+role_arn = arn:aws:iam::123456789014:role/AdminSwitchRole
+region = ap-northeast-1
+color = 6644FF
+
+[profile test4-readonly]
+role_arn = arn:aws:iam::123456789014:role/ReadOnlySwitchRole
+region = ap-northeast-1
+color = 22CCAA
+```
+
 
 ## 開発
 

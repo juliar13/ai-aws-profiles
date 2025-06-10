@@ -17,6 +17,12 @@ func TestNewGenerator(t *testing.T) {
 
 func TestAddProfile(t *testing.T) {
 	generator := NewGenerator()
+	// デフォルトのカラールールを設定
+	generator.ColorManager.Rules = []ColorRule{
+		{Pattern: "admin", Color: "6644FF"},
+		{Pattern: "readonly", Color: "22CCAA"},
+	}
+	
 	generator.AddProfile("test-admin", "arn:aws:iam::123456789012:role/AdminSwitchRole")
 	
 	if len(generator.Profiles) != 1 {
@@ -30,13 +36,19 @@ func TestAddProfile(t *testing.T) {
 	if profile.RoleArn != "arn:aws:iam::123456789012:role/AdminSwitchRole" {
 		t.Errorf("Expected role ARN 'arn:aws:iam::123456789012:role/AdminSwitchRole', got '%s'", profile.RoleArn)
 	}
-	if profile.Color != "00aa00" {
-		t.Errorf("Expected color '00aa00', got '%s'", profile.Color)
+	if profile.Color != "6644FF" {
+		t.Errorf("Expected color '6644FF', got '%s'", profile.Color)
 	}
 }
 
 func TestGenerateProfiles(t *testing.T) {
 	generator := NewGenerator()
+	// デフォルトのカラールールを設定
+	generator.ColorManager.Rules = []ColorRule{
+		{Pattern: "admin", Color: "6644FF"},
+		{Pattern: "readonly", Color: "22CCAA"},
+	}
+	
 	generator.GenerateProfiles("123456789012", "test")
 	
 	expectedProfiles := 2
@@ -44,23 +56,39 @@ func TestGenerateProfiles(t *testing.T) {
 		t.Errorf("Expected %d profiles, got %d", expectedProfiles, len(generator.Profiles))
 	}
 	
-	expectedNames := []string{"test-admin", "test-readonly"}
-	for i, expectedName := range expectedNames {
-		if generator.Profiles[i].Name != expectedName {
-			t.Errorf("Expected profile name '%s', got '%s'", expectedName, generator.Profiles[i].Name)
+	expectedData := []struct {
+		name  string
+		color string
+	}{
+		{"test-admin", "6644FF"},
+		{"test-readonly", "22CCAA"},
+	}
+	
+	for i, expected := range expectedData {
+		if generator.Profiles[i].Name != expected.name {
+			t.Errorf("Expected profile name '%s', got '%s'", expected.name, generator.Profiles[i].Name)
+		}
+		if generator.Profiles[i].Color != expected.color {
+			t.Errorf("Expected profile color '%s', got '%s'", expected.color, generator.Profiles[i].Color)
 		}
 	}
 }
 
 func TestGenerateExtensionFormat(t *testing.T) {
 	generator := NewGenerator()
+	// デフォルトのカラールールを設定
+	generator.ColorManager.Rules = []ColorRule{
+		{Pattern: "admin", Color: "6644FF"},
+		{Pattern: "readonly", Color: "22CCAA"},
+	}
+	
 	generator.AddProfile("test-admin", "arn:aws:iam::123456789012:role/AdminSwitchRole")
 	
 	output := generator.GenerateExtensionFormat()
 	expected := `[profile test-admin]
 role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
 region = ap-northeast-1
-color = 00aa00`
+color = 6644FF`
 	
 	if strings.TrimSpace(output) != strings.TrimSpace(expected) {
 		t.Errorf("Expected:\n%s\n\nGot:\n%s", expected, output)
@@ -69,6 +97,12 @@ color = 00aa00`
 
 func TestGenerateConfigFormat(t *testing.T) {
 	generator := NewGenerator()
+	// デフォルトのカラールールを設定（configフォーマットでは色は使用されないが、一貫性のため）
+	generator.ColorManager.Rules = []ColorRule{
+		{Pattern: "admin", Color: "6644FF"},
+		{Pattern: "readonly", Color: "22CCAA"},
+	}
+	
 	generator.AddProfile("test-admin", "arn:aws:iam::123456789012:role/AdminSwitchRole")
 	
 	output := generator.GenerateConfigFormat()
