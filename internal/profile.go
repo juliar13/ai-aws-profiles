@@ -46,6 +46,7 @@ func (g *Generator) GenerateExtensionFormat() string {
 	for _, profile := range g.Profiles {
 		output.WriteString(fmt.Sprintf("[profile %s]\n", profile.Name))
 		output.WriteString(fmt.Sprintf("role_arn = %s\n", profile.RoleArn))
+		output.WriteString("region = ap-northeast-1\n")
 		output.WriteString(fmt.Sprintf("color = %s\n\n", profile.Color))
 	}
 	

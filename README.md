@@ -65,18 +65,22 @@ aws-prof --help
 ```ini
 [profile test-admin]
 role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
+region = ap-northeast-1
 color = 00aa00
 
 [profile test-readonly]
 role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
+region = ap-northeast-1
 color = 00aa00
 
 [profile test2-admin]
 role_arn = arn:aws:iam::123456789013:role/AdminSwitchRole
+region = ap-northeast-1
 color = 00aa00
 
 [profile test2-readonly]
 role_arn = arn:aws:iam::123456789013:role/ReadOnlySwitchRole
+region = ap-northeast-1
 color = 00aa00
 ```
 

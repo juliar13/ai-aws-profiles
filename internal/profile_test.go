@@ -59,6 +59,7 @@ func TestGenerateExtensionFormat(t *testing.T) {
 	output := generator.GenerateExtensionFormat()
 	expected := `[profile test-admin]
 role_arn = arn:aws:iam::123456789012:role/AdminSwitchRole
+region = ap-northeast-1
 color = 00aa00`
 	
 	if strings.TrimSpace(output) != strings.TrimSpace(expected) {
