@@ -124,3 +124,37 @@ func TestGenerateConfigFormat(t *testing.T) {
 	}
 }
 
+func TestSetRoleSessionName(t *testing.T) {
+	generator := NewGenerator()
+	
+	if generator.RoleSessionName != "user_name" {
+		t.Errorf("Expected default RoleSessionName 'user_name', got '%s'", generator.RoleSessionName)
+	}
+	
+	generator.SetRoleSessionName("claude")
+	
+	if generator.RoleSessionName != "claude" {
+		t.Errorf("Expected RoleSessionName 'claude', got '%s'", generator.RoleSessionName)
+	}
+}
+
+func TestGenerateConfigFormatWithCustomRoleSessionName(t *testing.T) {
+	generator := NewGenerator()
+	generator.ColorManager.Rules = []ColorRule{
+		{Pattern: "admin", Color: "6644FF"},
+	}
+	
+	generator.SetRoleSessionName("claude")
+	generator.AddProfile("test-admin", "arn:aws:iam::123456789012:role/AdminSwitchRole")
+	
+	output := generator.GenerateConfigFormat()
+	
+	if !strings.Contains(output, "role_session_name = claude") {
+		t.Errorf("Expected output to contain 'role_session_name = claude', but it didn't. Output:\n%s", output)
+	}
+	
+	if strings.Contains(output, "role_session_name = user_name") {
+		t.Errorf("Expected output NOT to contain 'role_session_name = user_name', but it did. Output:\n%s", output)
+	}
+}
+

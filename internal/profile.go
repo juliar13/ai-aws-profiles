@@ -12,15 +12,21 @@ type Profile struct {
 }
 
 type Generator struct {
-	Profiles     []Profile
-	ColorManager *ColorManager
+	Profiles        []Profile
+	ColorManager    *ColorManager
+	RoleSessionName string
 }
 
 func NewGenerator() *Generator {
 	cm := NewColorManager()
 	return &Generator{
-		ColorManager: cm,
+		ColorManager:    cm,
+		RoleSessionName: "user_name",
 	}
+}
+
+func (g *Generator) SetRoleSessionName(name string) {
+	g.RoleSessionName = name
 }
 
 func (g *Generator) AddProfile(name, roleArn string) {
@@ -64,7 +70,7 @@ func (g *Generator) GenerateConfigFormat() string {
 	output.WriteString("[default]\n")
 	output.WriteString("region = ap-northeast-1\n")
 	output.WriteString("output = json\n")
-	output.WriteString("role_session_name = user_name\n\n")
+	output.WriteString(fmt.Sprintf("role_session_name = %s\n\n", g.RoleSessionName))
 	
 	for _, profile := range g.Profiles {
 		output.WriteString(fmt.Sprintf("[profile %s]\n", profile.Name))
