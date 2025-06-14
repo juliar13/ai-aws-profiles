@@ -11,9 +11,10 @@ import (
 )
 
 var (
-	format   string
-	output   string
-	version  = "1.0.0"
+	format         string
+	output         string
+	roleSessionName string
+	version        = "1.0.0"
 )
 
 var rootCmd = &cobra.Command{
@@ -38,6 +39,7 @@ var versionCmd = &cobra.Command{
 func init() {
 	rootCmd.Flags().StringVar(&format, "format", "", "Output format (extension/config)")
 	rootCmd.Flags().StringVar(&output, "output", "", "Output file path")
+	rootCmd.Flags().StringVar(&roleSessionName, "role-session-name", "user_name", "Role session name for AWS config")
 	rootCmd.AddCommand(versionCmd)
 }
 
@@ -47,6 +49,8 @@ func runAWSProf(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to fetch accounts from AWS: %w", err)
 	}
+
+	generator.SetRoleSessionName(roleSessionName)
 
 	if format == "" {
 		return writeDefaultOutput(generator)

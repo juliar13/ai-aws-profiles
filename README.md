@@ -48,6 +48,9 @@ aws-prof --format=extension
 # ~/.aws/config 用の設定を標準出力
 aws-prof --format=config
 
+# role_session_nameを指定
+aws-prof --role-session-name=claude --format=config
+
 # 指定したファイルに設定を出力
 aws-prof --format=extension --output=profiles.txt
 
@@ -115,6 +118,7 @@ role_arn = arn:aws:iam::123456789012:role/ReadOnlySwitchRole
 |-----------|------|
 | `--format` | 出力形式 (extension/config) |
 | `--output` | 出力ファイルパス |
+| `--role-session-name` | ~/.aws/configのrole_session_name設定 (デフォルト: user_name) |
 
 ## AWS Extend Switch Role の色を設定
 
